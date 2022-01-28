@@ -1,0 +1,31 @@
+version: "3.8"
+services:
+  web:
+    build: ./app
+    image: 436216743777.dkr.ecr.us-east-1.amazonaws.com/project1:project1_web
+    command: gunicorn playlists.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - ./app/:/usr/src/app/
+      - static_volume:/usr/src/app/static
+    expose:
+      - 8000
+    environment:
+      - DB_NAME=my_playlists
+      - DB_USER=postgres
+      - DB_PASSWORD=admin123
+      - DB_HOST=project1.cluyel9qcqsq.us-east-1.rds.amazonaws.com
+      - DB_PORT=5432
+      - DATABASE=postgres
+      - VIRTUAL_HOST=ec2-54-166-115-145.compute-1.amazonaws.com
+      - VIRTUAL_PORT=8000
+  nginx:
+    build: ./nginx
+    image: 436216743777.dkr.ecr.us-east-1.amazonaws.com/project1:project1_nginx
+    volumes:
+      - static_volume:/usr/src/app/static
+    ports:
+      - 8000:80
+    depends_on:
+      - web
+volumes:
+  static_volume:

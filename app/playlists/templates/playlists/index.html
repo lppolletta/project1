@@ -1,0 +1,11 @@
+{% extends "playlists/base.html" %} {% load static %}{% block title %} Tracks
+{% endblock%} {% block content%}
+<div class="container">
+  <h1>Tracks</h1>
+  <ul>
+    {% for track in tracks %}
+    <li>{{ track.name }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %} {% block jsfiles %} {% endblock jsfiles %}
